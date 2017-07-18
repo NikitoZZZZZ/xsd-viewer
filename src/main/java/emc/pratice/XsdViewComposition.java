@@ -14,10 +14,19 @@ package emc.pratice;
 
 public class XsdViewComposition {
 
+
     private final String name;
     private final long id;
     private final String xsdSchema;
     private final String content;
+
+    public XsdViewComposition(){
+        name="null";
+        id=0;
+        xsdSchema="null";
+        content = "null";
+    }
+
 
     public XsdViewComposition(String name, long id, String xsdSchema, String content) {
         this.name = name;
@@ -25,6 +34,8 @@ public class XsdViewComposition {
         this.xsdSchema = xsdSchema;
         this.content = content;
     }
+
+
 
     public String getName() {
         return name;
