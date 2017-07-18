@@ -1,40 +1,48 @@
 package emc.pratice;
 
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 public class Controller {
 
-    private static final String template = "%s";
     private final AtomicLong counter = new AtomicLong();
 
+    Storage storage = new Storage();
 
-    private List<XsdViewComposition> listOfXsd = new ArrayList<>(Arrays.asList(
-            new XsdViewComposition("Veronika",counter.incrementAndGet(),"Some scheme"+counter,"Some content "+counter),
-            new XsdViewComposition("Nikita",counter.incrementAndGet(),"Some scheme"+counter,"Some content "+counter),
-            new XsdViewComposition("Vanya",counter.incrementAndGet(),"Some scheme"+counter,"Some content "+counter)
-            ));
-
-    @RequestMapping("/all")
-    public List<XsdViewComposition> View() {
-        return listOfXsd;
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public Storage get() {
+        return storage;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/all")
-    public void addXsdScheme(@RequestBody XsdViewComposition xsd) {
-        listOfXsd.add(xsd);
+    public void add(@RequestBody XsdViewComposition xsd) {
+        storage.add(xsd);
     }
 
-    @RequestMapping("/all/{name}")
-    public XsdViewComposition getXsdScheme(@PathVariable String name){
+    @RequestMapping(value = "/{ID}", method = RequestMethod.DELETE)
+    public String delete(@PathVariable Long ID) {
+        storage.deleteByID(ID);
+        //TO DO:
+        //create notification, if this xsd is not exist
+        return new String("XSD with ID: " + ID.toString() + " removed");
+    }
 
-        return listOfXsd.stream().filter(t->t.getName().equals(name)).findFirst().get();
+    @RequestMapping(value = "/all", method = RequestMethod.DELETE)
+    public String delete(@PathVariable String name) {
+        storage.deleteAll();
+        //TO DO:
+        //create notification, if this xsd is not exist
+        return new String("XSD with name: " + name + " removed");
+    }
+
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
+    public Object get(@PathVariable String name) {
+        XsdViewComposition object = storage.getByName(name);
+        if (object != null)
+            return object;
+        else return new String("XSD not found");
     }
 
 
