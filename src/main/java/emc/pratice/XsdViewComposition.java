@@ -10,6 +10,9 @@ package emc.pratice;
 //               }
 
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
+
 public class XsdViewComposition {
     private final String name;
     private final Long id;
@@ -59,5 +62,28 @@ public class XsdViewComposition {
 
     public String getUpdateURL() {
         return updateURL;
+    }
+
+    public BasicDBObject toDBObject() {
+        BasicDBObject document = new BasicDBObject();
+
+        document.put("ID", id);
+        document.put("NAME", name);
+        document.put("XSD_SCHEMA", xsdSchema);
+        document.put("CONTENT", content);
+        document.put("DELETE_URL", deleteURL);
+        document.put("UPDATE_URL", updateURL);
+
+        return document;
+    }
+
+    public static XsdViewComposition fromDBObject(final DBObject document) {
+        XsdViewComposition xsd = new XsdViewComposition(
+                (String) document.get("NAME"),
+                (long) document.get("ID"),
+                (String) document.get("XSD_SCHEMA"),
+                (String) document.get("CONTENT"));
+
+        return xsd;
     }
 }
