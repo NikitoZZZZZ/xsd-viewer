@@ -16,7 +16,7 @@ public class XsdViewComposition {
     private final String xsdSchema;
     private final String content;
     private final String URL;
-    private final String PORT = "8080";
+    private final String PORT = "8090";
     private final String URL_TEMPLATE = "http://localhost:" + PORT + "/%s";
 
     public XsdViewComposition(String name, long id, String xsdSchema, String content) {

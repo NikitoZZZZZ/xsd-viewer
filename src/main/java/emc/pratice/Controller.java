@@ -1,8 +1,14 @@
 package emc.pratice;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 public class Controller {
@@ -46,4 +52,30 @@ public class Controller {
         db.clear();
         return new String("BD is empty");
     }
+
+        @PostMapping("/upload")
+    public ResponseEntity<?> upload(@RequestParam("xsdScheme") MultipartFile uploadFile){
+
+        try {
+            String fileName= uploadFile.getName();
+            String path =fileName;
+
+            System.out.println(fileName);
+
+            final BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(path)));
+            stream.write(uploadFile.getBytes());
+            stream.close();
+
+        }
+
+        catch(Exception e){
+            //LOGGER.info(e.getMessage());
+            return new ResponseEntity<>(org.springframework.http.HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
+    }
+
 }
+
+
