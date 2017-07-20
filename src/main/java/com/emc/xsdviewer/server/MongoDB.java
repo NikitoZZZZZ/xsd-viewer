@@ -1,4 +1,4 @@
-package emc.pratice;
+package com.emc.xsdviewer.server;
 
 import com.mongodb.*;
 
@@ -28,14 +28,15 @@ public class MongoDB {
 
         // HOW to assign an ID?????????
         counter.set(xsdCollection.getCount());
-
+        counter.incrementAndGet();
         //THIS code in order for DB to be not empty, after the refactoring must be removed!!!!
-        add(new XsdViewComposition(counter.toString(), counter.incrementAndGet(),
+        add(new XsdViewComposition(counter.toString(),
                 "xsd schema " + counter.toString(), "content " + counter.toString()));
     }
 
     public void add(XsdViewComposition xsd) {
-        BasicDBObject doc = xsd.toDBObject();
+        XsdViewComposition newXsd = new XsdViewComposition(xsd.getName(), xsd.getXsdSchema(), xsd.getContent());
+        BasicDBObject doc = newXsd.toDBObject();
         xsdCollection.insert(doc);
     }
 
@@ -49,24 +50,24 @@ public class MongoDB {
         return xsdFiles;
     }
 
-    public XsdViewComposition getByID(final Long ID) {
+    public XsdViewComposition getByID(final String ID) {
         DBObject result = findRecordByID(ID);
         if (result != null) return XsdViewComposition.fromDBObject(result);
         return null;
     }
 
-    public void updateNameByID(final Long ID, final String newName) {
+    public void updateNameByID(final String ID, final String newName) {
         BasicDBObject newData = new BasicDBObject();
-        newData.put("NAME", newName);
-        newData.put("ID", ID);
-        BasicDBObject searchQuery = new BasicDBObject().append("ID", ID);
+        newData.put("_name", newName);
+        newData.put("_id", ID);
+        BasicDBObject searchQuery = new BasicDBObject().append("_id", ID);
         xsdCollection.update(searchQuery, newData);
 
     }
 
-    public void removeByID(Long id) {
+    public void removeByID(final String id) {
         BasicDBObject query = new BasicDBObject();
-        query.put("ID", id);
+        query.put("_id", id);
         xsdCollection.remove(query);
     }
 
@@ -74,9 +75,9 @@ public class MongoDB {
         xsdCollection.remove(new BasicDBObject());
     }
 
-    private DBObject findRecordByID(final Long ID) {
+    private DBObject findRecordByID(final String ID) {
         BasicDBObject query = new BasicDBObject();
-        query.put("ID", ID);
+        query.put("_id", ID);
         return xsdCollection.findOne(query);
     }
 }

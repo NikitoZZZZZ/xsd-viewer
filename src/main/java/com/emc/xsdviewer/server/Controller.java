@@ -1,4 +1,4 @@
-package emc.pratice;
+package com.emc.xsdviewer.server;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +8,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
-import java.util.logging.Logger;
 
 @RestController
 public class Controller {
@@ -21,7 +20,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/{ID}", method = RequestMethod.GET)
-    public Object get(@PathVariable Long ID) {
+    public Object get(@PathVariable String ID) {
         XsdViewComposition object = db.getByID(ID);
         if (object != null)
             return object;
@@ -35,13 +34,13 @@ public class Controller {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{ID}")
-    public Object update(@PathVariable Long ID, @RequestBody XsdViewComposition xsd){
+    public Object update(@PathVariable String ID, @RequestBody XsdViewComposition xsd) {
         db.updateNameByID(ID, xsd.getName());
         return db.getByID(ID);
     }
 
     @RequestMapping(value = "/{ID}", method = RequestMethod.DELETE)
-    public String delete(@PathVariable Long ID) {
+    public String delete(@PathVariable String ID) {
         db.removeByID(ID);
         //TODO: create notification, if xsd is not exist
         return new String("XSD with ID: " + ID.toString() + " removed");
@@ -53,12 +52,11 @@ public class Controller {
         return new String("BD is empty");
     }
 
-        @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestParam("xsdScheme") MultipartFile uploadFile){
-
+    @PostMapping("/upload")
+    public ResponseEntity<?> upload(@RequestParam("xsdScheme") MultipartFile uploadFile) {
         try {
-            String fileName= uploadFile.getName();
-            String path =fileName;
+            String fileName = uploadFile.getName();
+            String path = fileName;
 
             System.out.println(fileName);
 
@@ -66,16 +64,9 @@ public class Controller {
             stream.write(uploadFile.getBytes());
             stream.close();
 
-        }
-
-        catch(Exception e){
-            //LOGGER.info(e.getMessage());
+        } catch (Exception e) {
             return new ResponseEntity<>(org.springframework.http.HttpStatus.BAD_REQUEST);
         }
-
         return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
     }
-
 }
-
-
