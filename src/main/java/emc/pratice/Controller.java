@@ -28,6 +28,12 @@ public class Controller {
         db.add(xsd);
     }
 
+    @RequestMapping(method = RequestMethod.PUT, value = "/{ID}")
+    public Object update(@PathVariable Long ID, @RequestBody XsdViewComposition xsd){
+        db.updateNameByID(ID, xsd.getName());
+        return db.getByID(ID);
+    }
+
     @RequestMapping(value = "/{ID}", method = RequestMethod.DELETE)
     public String delete(@PathVariable Long ID) {
         db.removeByID(ID);

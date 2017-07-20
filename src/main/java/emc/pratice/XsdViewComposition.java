@@ -4,10 +4,7 @@ package emc.pratice;
 //        - id
 //        - xsdSchema
 //        - Content
-//        - links {
-//                - delete
-//                - update
-//               }
+//        - URL
 
 
 import com.mongodb.BasicDBObject;
@@ -18,16 +15,16 @@ public class XsdViewComposition {
     private final Long id;
     private final String xsdSchema;
     private final String content;
-    private final String deleteURL;
-    private final String updateURL;
+    private final String URL;
+    private final String PORT = "8080";
+    private final String URL_TEMPLATE = "http://localhost:" + PORT + "/%s";
 
     public XsdViewComposition(String name, long id, String xsdSchema, String content) {
         this.name = name;
         this.id = id;
         this.xsdSchema = xsdSchema;
         this.content = content;
-        this.deleteURL = "http://localhost:8090/" + this.id.toString();
-        this.updateURL = "http://localhost:8090/" + this.id.toString();
+        this.URL = new String(String.format(URL_TEMPLATE, this.id.toString()));
     }
 
     public XsdViewComposition() {
@@ -35,8 +32,7 @@ public class XsdViewComposition {
         this.id = new Long(0);
         this.xsdSchema = "null";
         this.content = "null";
-        updateURL = null;
-        deleteURL = null;
+        URL = new String(String.format(URL_TEMPLATE, this.id.toString()));
     }
 
 
@@ -56,12 +52,8 @@ public class XsdViewComposition {
         return content;
     }
 
-    public String getDeleteURL() {
-        return deleteURL;
-    }
-
-    public String getUpdateURL() {
-        return updateURL;
+    public String getURL() {
+        return URL;
     }
 
     public BasicDBObject toDBObject() {
@@ -71,8 +63,7 @@ public class XsdViewComposition {
         document.put("NAME", name);
         document.put("XSD_SCHEMA", xsdSchema);
         document.put("CONTENT", content);
-        document.put("DELETE_URL", deleteURL);
-        document.put("UPDATE_URL", updateURL);
+        document.put("URL", URL);
 
         return document;
     }
@@ -85,5 +76,18 @@ public class XsdViewComposition {
                 (String) document.get("CONTENT"));
 
         return xsd;
+    }
+
+    @Override
+    public String toString() {
+        return "XsdViewComposition{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                ", xsdSchema='" + xsdSchema + '\'' +
+                ", content='" + content + '\'' +
+                ", URL='" + URL + '\'' +
+                ", PORT='" + PORT + '\'' +
+                ", URL_TEMPLATE='" + URL_TEMPLATE + '\'' +
+                '}';
     }
 }

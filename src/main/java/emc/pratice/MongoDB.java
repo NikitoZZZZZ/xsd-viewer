@@ -41,7 +41,6 @@ public class MongoDB {
 
     public List<XsdViewComposition> getAll() {
         List<XsdViewComposition> xsdFiles = new ArrayList<XsdViewComposition>();
-
         DBCursor cursor = xsdCollection.find();
         while (cursor.hasNext()) {
             DBObject dbo = cursor.next();
@@ -51,13 +50,18 @@ public class MongoDB {
     }
 
     public XsdViewComposition getByID(final Long ID) {
-        BasicDBObject query = new BasicDBObject();
-        query.put("ID", ID);
-        DBObject result = xsdCollection.findOne(query);
-        if (result != null) {
-            return XsdViewComposition.fromDBObject(result);
-        }
+        DBObject result = findRecordByID(ID);
+        if (result != null) return XsdViewComposition.fromDBObject(result);
         return null;
+    }
+
+    public void updateNameByID(final Long ID, final String newName) {
+        BasicDBObject newData = new BasicDBObject();
+        newData.put("NAME", newName);
+        newData.put("ID", ID);
+        BasicDBObject searchQuery = new BasicDBObject().append("ID", ID);
+        xsdCollection.update(searchQuery, newData);
+
     }
 
     public void removeByID(Long id) {
@@ -68,5 +72,11 @@ public class MongoDB {
 
     public void clear() {
         xsdCollection.remove(new BasicDBObject());
+    }
+
+    private DBObject findRecordByID(final Long ID) {
+        BasicDBObject query = new BasicDBObject();
+        query.put("ID", ID);
+        return xsdCollection.findOne(query);
     }
 }
