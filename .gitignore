@@ -4,3 +4,10 @@ gradle/
 gradlew
 gradlew.bat
 settings.gradle
+.classpath
+.metadata/
+.recommenders/
+.settings/
+.classpath
+.project
+target/
