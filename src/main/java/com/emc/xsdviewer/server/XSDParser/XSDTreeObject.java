@@ -20,7 +20,6 @@ public class XSDTreeObject {
 	
 	private void changeTree(XSDNode parent, XSDNode child, Settings settings) {
 		List<XSDNode> pointer = child.getNextNodeList();
-		//XSDNode parentNode = node;
 		
 		if (pointer != null) {
 			for (int i = 0; i < pointer.size(); ++i) {
@@ -44,7 +43,6 @@ public class XSDTreeObject {
 		root.add(copyTree.getRootElement());
 		XSDNode aboveRoot = new XSDNode();
 		aboveRoot.setNextNodeList(root);
-		aboveRoot.setElementName("kek");
 		changeTree(copyTree.getRootElement(), copyTree.getRootElement().getNextNodeList().get(0), settings);
 
 		return copyTree;
