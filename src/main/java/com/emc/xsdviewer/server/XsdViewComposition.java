@@ -6,25 +6,20 @@ import org.bson.types.ObjectId;
 import org.springframework.hateoas.Link;
 
 public class XsdViewComposition {
-    private String name;
-    private String id;
-    private String xsdSchema;
-    private String content;
-    private String URL;
-    private Link link;
+    private String name = "null";
+    private String id = "null";
+    private String xsdSchema = "null";
+    private String content = "null";
+    private Link link = new Link("null");
     private final String PORT = "8765";
     private final String URL_TEMPLATE = "http://localhost:" + PORT + "/%s";
-
-    protected XsdViewComposition() {
-    }
 
     public XsdViewComposition(final String name, final String id, final String xsdSchema, final String content) {
         this.name = name;
         this.id = id;
         this.xsdSchema = xsdSchema;
         this.content = content;
-        //this.link = new Link(String.format(URL_TEMPLATE, this.id.toString()));
-        this.URL = new String(String.format(URL_TEMPLATE, this.id.toString()));
+        this.link = new Link(String.format(URL_TEMPLATE, this.id.toString()));
     }
 
     public XsdViewComposition(final String name, final String xsdSchema, final String content) {
@@ -32,8 +27,7 @@ public class XsdViewComposition {
         this.id = new ObjectId().toHexString();
         this.xsdSchema = xsdSchema;
         this.content = content;
-        //this.link = new Link(String.format(URL_TEMPLATE, this.id.toString()));
-        this.URL = new String(String.format(URL_TEMPLATE, this.id.toString()));
+        this.link = new Link(String.format(URL_TEMPLATE, this.id.toString()));
     }
 
 
@@ -53,8 +47,8 @@ public class XsdViewComposition {
         return content;
     }
 
-    public String getURL() {
-        return URL;
+    public Link getLink() {
+        return link;
     }
 
     public BasicDBObject toDBObject() {
@@ -63,7 +57,8 @@ public class XsdViewComposition {
         document.put("_name", name);
         document.put("_xsd_schema", xsdSchema);
         document.put("_content", content);
-        document.put("_url", URL);
+        //document.put("_url", URL);
+        document.put("_link", link);
 
         return document;
     }
@@ -81,10 +76,10 @@ public class XsdViewComposition {
     public String toString() {
         return "XsdViewComposition{" +
                 "name='" + name + '\'' +
-                ", id=" + id +
+                ", id='" + id + '\'' +
                 ", xsdSchema='" + xsdSchema + '\'' +
                 ", content='" + content + '\'' +
-                ", URL='" + URL + '\'' +
+                ", link=" + link +
                 '}';
     }
 }

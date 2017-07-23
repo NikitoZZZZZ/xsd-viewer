@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Created by nika- on 18.07.2017.
@@ -23,25 +22,16 @@ public class MongoDB {
     private DB db;
     private DBCollection xsdCollection;
     private GridFS gridfs;
-
-    private AtomicLong counter = new AtomicLong();
+    private final String COLLECTION_NAME = "xsd_files";
 
     public MongoDB() {
         mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
         db = mongoClient.getDB("xsdDB");
-        xsdCollection = db.getCollection("xsd_files");
+        xsdCollection = db.getCollection(COLLECTION_NAME);
         if (xsdCollection == null) {
-            xsdCollection = db.createCollection("xsd_files", null);
+            xsdCollection = db.createCollection(COLLECTION_NAME, null);
         }
-
-        gridfs = new GridFS(db, "xsd collections");
-
-        // HOW to assign an ID?????????
-        counter.set(xsdCollection.getCount());
-        counter.incrementAndGet();
-        //THIS code in order for DB to be not empty, after the refactoring must be removed!!!!
-        add(new XsdViewComposition(counter.toString(),
-                "xsd schema " + counter.toString(), "content " + counter.toString()));
+        gridfs = new GridFS(db, COLLECTION_NAME);
     }
 
     public void add(XsdViewComposition xsd) {
@@ -72,7 +62,6 @@ public class MongoDB {
         newData.put("_id", ID);
         BasicDBObject searchQuery = new BasicDBObject().append("_id", ID);
         xsdCollection.update(searchQuery, newData);
-
     }
 
     public void removeByID(final String id) {
@@ -91,25 +80,28 @@ public class MongoDB {
         return xsdCollection.findOne(query);
     }
 
-    //-------------------------------------------------------------------
-    public void addFile(byte[] file, String name) {
+    public void addFile(final byte[] file, final String name) {
         InputStream InputStream = new ByteArrayInputStream(file);
-        GridFSInputFile inputfile = gridfs.createFile(InputStream, name);
-        inputfile.save();
+        GridFSInputFile inputFile = gridfs.createFile(InputStream, name);
+        inputFile.save();
     }
 
-    public void getFile(String name) {
-        GridFSDBFile gfsFileOut = (GridFSDBFile) gridfs.findOne(name);
-        System.out.println(gfsFileOut.getInputStream());
-        InputStream is = gfsFileOut.getInputStream();
-
+    public void getFile(final String name) {
+        InputStream inputStream = getInputStreamFromGridFSD(name);
         String readLine;
-        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         try {
-            while (((readLine = br.readLine()) != null)) {
+            while (((readLine = bufferedReader.readLine()) != null)) {
                 System.out.println(readLine);
             }
         } catch (Exception e) {
+            //LOG????
         }
+    }
+
+    private InputStream getInputStreamFromGridFSD(final String name) {
+        GridFSDBFile gfsFileOut = (GridFSDBFile) gridfs.findOne(name);
+        //System.out.println(gfsFileOut.getInputStream());
+        return gfsFileOut.getInputStream();
     }
 }
