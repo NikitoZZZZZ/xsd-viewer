@@ -1,1 +1,13 @@
-# Add any directories, files, or patterns you don't want to be tracked by version control
+**build/
+**bin/
+**gradle/
+**gradlew
+**gradlew.bat
+**settings.gradle
+**.classpath
+**.metadata/
+**.recommenders/
+**.settings/
+**.classpath
+**.project
+**target/
