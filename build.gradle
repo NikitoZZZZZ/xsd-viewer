@@ -35,6 +35,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-data-mongodb")
     compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.4.2'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '1.5.4.RELEASE'
 
     testCompile("junit:junit")
 

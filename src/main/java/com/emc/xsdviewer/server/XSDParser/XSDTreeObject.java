@@ -1,4 +1,4 @@
-package com.emc.xsdviewer.xsdparser;
+package com.emc.xsdviewer.server.XSDParser;
 
 import java.io.StringWriter;
 import java.util.ArrayList;
