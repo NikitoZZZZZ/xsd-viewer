@@ -6,7 +6,7 @@ import java.util.Set;
 public class Settings {
 	private Set<String> XSDNodesNames;
 
-	Settings() {
+	public Settings() {
 		setXSDNodesNames(new HashSet<>());
 	}
 	

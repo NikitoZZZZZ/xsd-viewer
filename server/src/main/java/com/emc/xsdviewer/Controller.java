@@ -1,10 +1,9 @@
 package com.emc.xsdviewer;
 
+import com.emc.xsdviewer.XSDParser.Settings;
 import com.emc.xsdviewer.XSDParser.XSDTreeObject;
-import com.emc.xsdviewer.server.MongoDB;
-import com.emc.xsdviewer.server.XSDParser.XSDTreeObject;
-import com.emc.xsdviewer.server.XsdViewComposition;
-import com.mongodb.DBObject;
+import com.emc.xsdviewer.MongoDB;
+import com.emc.xsdviewer.XsdViewComposition;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,19 +22,21 @@ public class Controller {
         return db.getAll();
     }
 
-//    @RequestMapping(value = "/{ID}", method = RequestMethod.GET)
-//    public Object get(@PathVariable String ID) {
-//        XsdViewComposition object = db.getByID(ID);
-//        if (object != null)
-//            return object;
-//        return new String("XSD with ID: " + ID + " not found");
-//    }
+/*    @RequestMapping(value = "/{ID}", method = RequestMethod.GET)
+    public Object get(@PathVariable String ID) {
+        XsdViewComposition object = db.getByID(ID);
+        if (object != null)
+            return object;
+        return new String("XSD with ID: " + ID + " not found");
+    }*/
 
     @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
     public Object get(@PathVariable String NAME) {
+    	Settings settings = new Settings();
+    	
         tree = new XSDTreeObject(db.getInputStream(NAME));
         if (tree != null)
-            return tree;
+            return tree.getTree(settings);
         return new String("XSD with NAME: " + NAME + " not found");
     }
 
