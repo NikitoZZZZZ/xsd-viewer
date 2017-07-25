@@ -1,4 +1,4 @@
-package com.emc.xsdviewer.server;
+package com.emc.xsdviewer;
 
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;

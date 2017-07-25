@@ -1,4 +1,4 @@
-package com.emc.xsdviewer.server.XSDParser;
+package com.emc.xsdviewer.XSDParser;
 
 import java.io.InputStream;
 import java.io.StringWriter;

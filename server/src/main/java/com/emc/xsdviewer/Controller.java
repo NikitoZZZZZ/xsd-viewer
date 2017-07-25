@@ -1,6 +1,6 @@
-package com.emc.xsdviewer.server;
+package com.emc.xsdviewer;
 
-import com.emc.xsdviewer.server.XSDParser.XSDTreeObject;
+import com.emc.xsdviewer.XSDParser.XSDTreeObject;
 import com.mongodb.DBObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
