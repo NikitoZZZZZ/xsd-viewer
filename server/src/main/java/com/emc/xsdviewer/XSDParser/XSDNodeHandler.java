@@ -12,7 +12,7 @@ public class XSDNodeHandler {
 	
 	public static String createAttrName(Node node) {
 		return (node.getAttributes().getNamedItem("name") != null)
-				? node.getAttributes().getNamedItem("name").toString()
+				? node.getAttributes().getNamedItem("name").toString().substring(5).replaceAll("[\"]", "")
 				: null;
 	}
 	

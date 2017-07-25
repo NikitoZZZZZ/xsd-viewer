@@ -1,6 +1,6 @@
 package com.emc.xsdviewer;
 
-import com.emc.xsdviewer.server.XsdViewComposition;
+import com.emc.xsdviewer.XsdViewComposition;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;

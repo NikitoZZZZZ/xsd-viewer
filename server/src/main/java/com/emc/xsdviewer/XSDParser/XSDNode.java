@@ -5,6 +5,7 @@ import java.util.List;
 import org.w3c.dom.Node;
 
 public class XSDNode {
+	
 	private String elementName;
 	private String attrName;
 	private List<XSDNode> nextNodeList;
@@ -41,13 +42,13 @@ public class XSDNode {
 	public void setNextNodeList(List<XSDNode> nextNodeList) {
 		this.nextNodeList = nextNodeList;
 	}
-	public Node getNode() {
+	protected Node getNode() {
 		return node;
 	}
 	public void setNode(Node node) {
 		this.node = node;
 	}
-	public boolean getVisible() {
+	protected boolean getVisible() {
 		return visible;
 	}
 	public void setVisible(boolean visible) {
