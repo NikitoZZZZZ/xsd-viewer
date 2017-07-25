@@ -1,6 +1,9 @@
 package com.emc.xsdviewer;
 
 import com.emc.xsdviewer.XSDParser.XSDTreeObject;
+import com.emc.xsdviewer.server.MongoDB;
+import com.emc.xsdviewer.server.XSDParser.XSDTreeObject;
+import com.emc.xsdviewer.server.XsdViewComposition;
 import com.mongodb.DBObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,11 +15,11 @@ import java.util.List;
 @RestController
 public class Controller {
 
-    MongoDB db = new MongoDB();
+    private MongoDB db = new MongoDB();
     private XSDTreeObject tree;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<DBObject> getAll() {
+    public List<String> getAll() {
         return db.getAll();
     }
 
@@ -30,29 +33,25 @@ public class Controller {
 
     @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
     public Object get(@PathVariable String NAME) {
-        //Object object = db.getByName(NAME);
-    	tree = new XSDTreeObject(db.getInputStream(NAME));
-        if (/*object*/tree != null)
-            return /*object*/tree;
+        tree = new XSDTreeObject(db.getInputStream(NAME));
+        if (tree != null)
+            return tree;
         return new String("XSD with NAME: " + NAME + " not found");
     }
 
-
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
     public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile,
-    	final @RequestParam("name") String name) {
+                                 final @RequestParam("name") String name) {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(uploadFile.getBytes());
             byte[] file = new byte[inputStream.available()];
             inputStream.read(file);
             db.addFile(file, name);
-            //db.getFile(name);
 
         } catch (Exception e) {
             //LOGGER.info(e.getMessage());
             return new ResponseEntity<>(org.springframework.http.HttpStatus.BAD_REQUEST);
         }
-
         return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
     }
 

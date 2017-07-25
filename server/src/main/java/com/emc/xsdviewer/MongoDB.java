@@ -1,5 +1,6 @@
 package com.emc.xsdviewer;
 
+import com.emc.xsdviewer.server.XsdViewComposition;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
@@ -47,12 +48,12 @@ public class MongoDB {
 //        return xsdFiles;
 //    }
 
-    public List<DBObject> getAll() {
-        List<DBObject> xsdFiles = new ArrayList<>();
+    public List<String> getAll() {
+        List<String> xsdFiles = new ArrayList<>();
         DBCursor cursor = gridfs.getFileList();
         while (cursor.hasNext()) {
-            //System.out.println(cursor.next());
-            xsdFiles.add(cursor.next());
+            DBObject object = cursor.next();
+            xsdFiles.add((String) object.get("filename"));
         }
         return xsdFiles;
     }
@@ -93,33 +94,32 @@ public class MongoDB {
         inputFile.save();
     }
 
-    public String getFile(final String name) {
-        StringWriter sw = new StringWriter();
-        InputStream inputStream = getInputStreamFromGridFSD(name);
-        String readLine;
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-        try {
-            while (((readLine = bufferedReader.readLine()) != null)) {
-                System.out.println(readLine);
-                sw.append(readLine);
-            }
-        } catch (Exception e) {
-            //LOG????
-        }
-        return sw.toString();
-    }
+//    public String getFile(final String name) {
+//        StringWriter sw = new StringWriter();
+//        InputStream inputStream = getInputStreamFromGridFSD(name);
+//        String readLine;
+//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+//        try {
+//            while (((readLine = bufferedReader.readLine()) != null)) {
+//                System.out.println(readLine);
+//                sw.append(readLine);
+//            }
+//        } catch (Exception e) {
+//            //LOG????
+//        }
+//        return sw.toString();
+//    }
 
     private InputStream getInputStreamFromGridFSD(final String name) {
         GridFSDBFile gfsFileOut = (GridFSDBFile) gridfs.findOne(name);
-        //System.out.println(gfsFileOut.getInputStream());
         return gfsFileOut.getInputStream();
     }
 
-    public String getByName(final String name) {
-        return getFile(name);
-    }
-    
-    public InputStream getInputStream(String name) {
-    	return getInputStreamFromGridFSD(name);
+//    public String getByName(final String name) {
+//        return getFile(name);
+//    }
+
+    public InputStream getInputStream(final String name) {
+        return getInputStreamFromGridFSD(name);
     }
 }
