@@ -93,7 +93,7 @@ public class MongoDB {
         inputFile.save();
     }
 
-    public Object getFile(final String name) {
+    public String getFile(final String name) {
         StringWriter sw = new StringWriter();
         InputStream inputStream = getInputStreamFromGridFSD(name);
         String readLine;
@@ -115,7 +115,11 @@ public class MongoDB {
         return gfsFileOut.getInputStream();
     }
 
-    public Object getByName(final String name) {
+    public String getByName(final String name) {
         return getFile(name);
+    }
+    
+    public InputStream getInputStream(String name) {
+    	return getInputStreamFromGridFSD(name);
     }
 }

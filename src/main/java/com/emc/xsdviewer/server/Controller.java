@@ -1,5 +1,6 @@
 package com.emc.xsdviewer.server;
 
+import com.emc.xsdviewer.server.XSDParser.XSDTreeObject;
 import com.mongodb.DBObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import java.util.List;
 public class Controller {
 
     MongoDB db = new MongoDB();
+    private XSDTreeObject tree;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
     public List<DBObject> getAll() {
@@ -27,16 +29,18 @@ public class Controller {
 //    }
 
     @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
-    public Object getFile(@PathVariable String NAME) {
-        Object object = db.getByName(NAME);
-        if (object != null)
-            return object;
+    public Object get(@PathVariable String NAME) {
+        //Object object = db.getByName(NAME);
+    	tree = new XSDTreeObject(db.getInputStream(NAME));
+        if (/*object*/tree != null)
+            return /*object*/tree;
         return new String("XSD with NAME: " + NAME + " not found");
     }
 
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
-    public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile, final @RequestParam("name") String name) {
+    public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile,
+    	final @RequestParam("name") String name) {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(uploadFile.getBytes());
             byte[] file = new byte[inputStream.available()];

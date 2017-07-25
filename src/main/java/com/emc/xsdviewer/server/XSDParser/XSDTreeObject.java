@@ -1,5 +1,6 @@
 package com.emc.xsdviewer.server.XSDParser;
 
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +8,12 @@ import java.util.List;
 public class XSDTreeObject {
 	private XSDNode rootElement;
 
-	XSDTreeObject(String fileName) {
+	public XSDTreeObject(String fileName) {
 		setRootElement(XSDTreeObjectHandler.createXSDNode(fileName));
+	}
+	
+	public XSDTreeObject(InputStream inputStream) {
+		setRootElement(XSDTreeObjectHandler.createXSDNode(inputStream));
 	}
 	
 	public XSDNode getRootElement() {
