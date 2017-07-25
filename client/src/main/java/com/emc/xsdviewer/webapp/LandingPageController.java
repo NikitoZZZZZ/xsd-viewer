@@ -13,5 +13,5 @@ import java.util.Map;
 public class LandingPageController {
 
     @RequestMapping("/abc")
-    public String showHomePage(Map<String, Object> model) { return "index.html"; }
+    public String showHomePage(Map<String, Object> model) { return "static/index.html"; }
 }
