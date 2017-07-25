@@ -1,13 +1,11 @@
 package com.emc.xsdviewer.server;
 
+import com.mongodb.DBObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.List;
 
 @RestController
@@ -16,23 +14,44 @@ public class Controller {
     MongoDB db = new MongoDB();
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<XsdViewComposition> getAll() {
+    public List<DBObject> getAll() {
         return db.getAll();
     }
 
-    @RequestMapping(value = "/{ID}", method = RequestMethod.GET)
-    public Object get(@PathVariable String ID) {
-        XsdViewComposition object = db.getByID(ID);
+//    @RequestMapping(value = "/{ID}", method = RequestMethod.GET)
+//    public Object get(@PathVariable String ID) {
+//        XsdViewComposition object = db.getByID(ID);
+//        if (object != null)
+//            return object;
+//        return new String("XSD with ID: " + ID + " not found");
+//    }
+
+    @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
+    public Object getFile(@PathVariable String NAME) {
+        Object object = db.getByName(NAME);
         if (object != null)
             return object;
-        return new String("XSD with ID: " + ID + " not found");
+        return new String("XSD with NAME: " + NAME + " not found");
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/all")
-    public void add(@RequestBody XsdViewComposition xsd) {
-        //TODO: there must be load xsd-file
-        db.add(xsd);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/upload")
+    public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile, final @RequestParam("name") String name) {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(uploadFile.getBytes());
+            byte[] file = new byte[inputStream.available()];
+            inputStream.read(file);
+            db.addFile(file, name);
+            //db.getFile(name);
+
+        } catch (Exception e) {
+            //LOGGER.info(e.getMessage());
+            return new ResponseEntity<>(org.springframework.http.HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
     }
+
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{ID}")
     public Object update(@PathVariable String ID, @RequestBody XsdViewComposition xsd) {
@@ -51,29 +70,5 @@ public class Controller {
     public String delete() {
         db.clear();
         return new String("BD is empty");
-    }
-
-    @PostMapping("/upload")
-    public ResponseEntity<?> upload(@RequestParam("xsdScheme") MultipartFile uploadFile) {
-
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(uploadFile.getBytes());
-            byte[] file = new byte[inputStream.available()];
-            inputStream.read(file);
-            db.addFile(file, "xsd1");
-            db.getFile("xsd1");
-
-            //if we want to look on a file, we can print a file to console
-            //XsdViewComposition.printFromVolatileMemory(inputFile);
-
-            //if we want to save file localy without DB
-            //XsdViewComposition.saveToFile(uploadFile,uploadFile.getName());
-
-        } catch (Exception e) {
-            //LOGGER.info(e.getMessage());
-            return new ResponseEntity<>(org.springframework.http.HttpStatus.BAD_REQUEST);
-        }
-
-        return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
     }
 }
