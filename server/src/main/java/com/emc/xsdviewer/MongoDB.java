@@ -112,6 +112,7 @@ public class MongoDB {
 
     private InputStream getInputStreamFromGridFSD(final String name) {
         GridFSDBFile gfsFileOut = (GridFSDBFile) gridfs.findOne(name);
+        if (gfsFileOut == null) return null;
         return gfsFileOut.getInputStream();
     }
 

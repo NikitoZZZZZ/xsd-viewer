@@ -2,13 +2,14 @@ package com.emc.xsdviewer;
 
 import com.emc.xsdviewer.XSDParser.Settings;
 import com.emc.xsdviewer.XSDParser.XSDTreeObject;
-import com.emc.xsdviewer.MongoDB;
-import com.emc.xsdviewer.XsdViewComposition;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -22,22 +23,26 @@ public class Controller {
         return db.getAll();
     }
 
-/*    @RequestMapping(value = "/{ID}", method = RequestMethod.GET)
-    public Object get(@PathVariable String ID) {
-        XsdViewComposition object = db.getByID(ID);
-        if (object != null)
-            return object;
-        return new String("XSD with ID: " + ID + " not found");
-    }*/
-
     @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
-    public Object get(@PathVariable String NAME) {
-    	Settings settings = new Settings();
-    	
-        tree = new XSDTreeObject(db.getInputStream(NAME));
-        if (tree != null)
+    public Object get(final @PathVariable String NAME,
+                      final @RequestParam(value = "attributes", required = false) HashSet<String> attributes) {
+
+        Settings settings = new Settings();
+        InputStream inputStream = db.getInputStream(NAME);
+        if (attributes != null) {
+            settings.setXSDNodesNames(attributes);
+        }
+
+        if (inputStream != null) {
+            tree = new XSDTreeObject(db.getInputStream(NAME));
             return tree.getTree(settings);
+        }
         return new String("XSD with NAME: " + NAME + " not found");
+    }
+
+    @RequestMapping(value = "/allAttributes", method = RequestMethod.GET)
+    public HashSet<String> get() {
+        return new HashSet<String>(Arrays.asList("a attribute", "b attribute", "c attribute"));
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/upload")
@@ -55,7 +60,6 @@ public class Controller {
         }
         return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
     }
-
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{ID}")
     public Object update(@PathVariable String ID, @RequestBody XsdViewComposition xsd) {
