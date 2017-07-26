@@ -2,13 +2,13 @@ package com.emc.xsdviewer;
 
 import com.emc.xsdviewer.XSDParser.Settings;
 import com.emc.xsdviewer.XSDParser.XSDTreeObject;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -19,13 +19,13 @@ public class Controller {
     private XSDTreeObject tree;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public List<String> getAll() {
-        return db.getAll();
+    public HashSet<String> getAll() {
+        return db.getAllNames();
     }
 
     @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
-    public Object get(final @PathVariable String NAME,
-                      final @RequestParam(value = "attributes", required = false) HashSet<String> attributes) {
+    public ResponseEntity<?> get(final @PathVariable String NAME,
+                                 final @RequestParam(value = "attributes", required = false) HashSet<String> attributes) {
 
         Settings settings = new Settings();
         InputStream inputStream = db.getInputStream(NAME);
@@ -35,48 +35,50 @@ public class Controller {
 
         if (inputStream != null) {
             tree = new XSDTreeObject(db.getInputStream(NAME));
-            return tree.getTree(settings);
+            return new ResponseEntity<>(tree.getTree(settings), HttpStatus.OK);
         }
-        return new String("XSD with NAME: " + NAME + " not found");
+        return new ResponseEntity<>("XSD with NAME: " + NAME + " not found", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/allAttributes", method = RequestMethod.GET)
     public HashSet<String> get() {
-        return new HashSet<String>(Arrays.asList("a attribute", "b attribute", "c attribute"));
+        HashSet<String> setOfAttributes = db.getAllAttributes();
+        return setOfAttributes;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/upload")
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile,
                                  final @RequestParam("name") String name) {
+        if (db.checkName(name))
+            return new ResponseEntity<>("This name (" + name + ") is already taken", HttpStatus.OK);
         try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(uploadFile.getBytes());
-            byte[] file = new byte[inputStream.available()];
-            inputStream.read(file);
-            db.addFile(file, name);
-
-        } catch (Exception e) {
-            //LOGGER.info(e.getMessage());
-            return new ResponseEntity<>(org.springframework.http.HttpStatus.BAD_REQUEST);
+            db.addFile(uploadFile, name);
+        } catch (final IOException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(org.springframework.http.HttpStatus.OK);
+        return new ResponseEntity<>("XSD-file added", HttpStatus.OK);
     }
 
+
+
+
+
     @RequestMapping(method = RequestMethod.PUT, value = "/{ID}")
-    public Object update(@PathVariable String ID, @RequestBody XsdViewComposition xsd) {
+    public ResponseEntity<?> update(final @PathVariable String ID, final @RequestBody XsdViewComposition xsd) {
         db.updateNameByID(ID, xsd.getName());
-        return db.getByID(ID);
+        return new ResponseEntity<>(db.getByID(ID), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{ID}", method = RequestMethod.DELETE)
-    public String delete(@PathVariable String ID) {
+    public ResponseEntity<?> delete(final @PathVariable String ID) {
         db.removeByID(ID);
         //TODO: create notification, if xsd is not exist
-        return new String("XSD with ID: " + ID.toString() + " removed");
+        return new ResponseEntity<>("XSD with ID: " + ID.toString() + " removed", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.DELETE)
-    public String delete() {
+    public ResponseEntity<?> delete() {
         db.clear();
-        return new String("BD is empty");
+        return new ResponseEntity<>("BD is empty", HttpStatus.OK);
     }
 }

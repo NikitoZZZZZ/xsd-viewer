@@ -1,13 +1,15 @@
 package com.emc.xsdviewer;
 
-import com.emc.xsdviewer.XsdViewComposition;
 import com.mongodb.*;
 import com.mongodb.gridfs.GridFS;
 import com.mongodb.gridfs.GridFSDBFile;
 import com.mongodb.gridfs.GridFSInputFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -32,8 +34,8 @@ public class MongoDB {
         gridfs = new GridFS(db, COLLECTION_NAME);
     }
 
-    public void add(XsdViewComposition xsd) {
-        XsdViewComposition newXsd = new XsdViewComposition(xsd.getName(), xsd.getXsdSchema(), xsd.getContent());
+    public void add(final XsdViewComposition xsd) {
+        XsdViewComposition newXsd = new XsdViewComposition(xsd.getName(), xsd.getXsdSchema());
         BasicDBObject doc = newXsd.toDBObject();
         xsdCollection.insert(doc);
     }
@@ -48,8 +50,8 @@ public class MongoDB {
 //        return xsdFiles;
 //    }
 
-    public List<String> getAll() {
-        List<String> xsdFiles = new ArrayList<>();
+    public HashSet<String> getAllNames() {
+        HashSet<String> xsdFiles = new HashSet<>();
         DBCursor cursor = gridfs.getFileList();
         while (cursor.hasNext()) {
             DBObject object = cursor.next();
@@ -80,6 +82,7 @@ public class MongoDB {
 
     public void clear() {
         xsdCollection.remove(new BasicDBObject());
+        gridfs.remove(new BasicDBObject());
     }
 
     private DBObject findRecordByID(final String ID) {
@@ -88,9 +91,9 @@ public class MongoDB {
         return xsdCollection.findOne(query);
     }
 
-    public void addFile(final byte[] file, final String name) {
-        InputStream InputStream = new ByteArrayInputStream(file);
-        GridFSInputFile inputFile = gridfs.createFile(InputStream, name);
+    public void addFile(final MultipartFile multipartFile, final String name) throws IOException {
+        InputStream inputStream = getInputStreamFromMultipartFile(multipartFile);
+        GridFSInputFile inputFile = gridfs.createFile(inputStream, name);
         inputFile.save();
     }
 
@@ -110,17 +113,35 @@ public class MongoDB {
 //        return sw.toString();
 //    }
 
-    private InputStream getInputStreamFromGridFSD(final String name) {
-        GridFSDBFile gfsFileOut = (GridFSDBFile) gridfs.findOne(name);
-        if (gfsFileOut == null) return null;
-        return gfsFileOut.getInputStream();
-    }
-
 //    public String getByName(final String name) {
 //        return getFile(name);
 //    }
 
     public InputStream getInputStream(final String name) {
         return getInputStreamFromGridFSD(name);
+    }
+
+    public HashSet<String> getAllAttributes() {
+        HashSet<String> allAttributes = new HashSet<String>(Arrays.asList("a attribute", "b attribute", "c attribute"));
+        //TODO: To register a file in the database, with a list of attributes; In this method, get the file from the database
+        return allAttributes;
+    }
+
+    private InputStream getInputStreamFromMultipartFile(final MultipartFile multipartFile) throws IOException {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(multipartFile.getBytes());
+        byte[] file = new byte[inputStream.available()];
+        inputStream.read(file);
+        return new ByteArrayInputStream(file);
+    }
+
+    private InputStream getInputStreamFromGridFSD(final String name) {
+        GridFSDBFile gfsFileOut = (GridFSDBFile) gridfs.findOne(name);
+        if (gfsFileOut == null) return null;
+        return gfsFileOut.getInputStream();
+    }
+
+    public boolean checkName(final String name) {
+        HashSet<String> allNames = getAllNames();
+        return allNames.contains(name);
     }
 }
