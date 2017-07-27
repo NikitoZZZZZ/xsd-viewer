@@ -1,5 +1,4 @@
 var app = angular.module("WebApp", []).controller('ctrl', function ($scope, $http) {
-
     //$scope.uploader = new FileUploader();
     //console.info($scope.uploader)
 
@@ -39,15 +38,14 @@ var app = angular.module("WebApp", []).controller('ctrl', function ($scope, $htt
             method: 'GET',
             url: 'http://localhost:8765/check1',
             headers: {
-                'Content-Type': 'application/json;charset=utf-8',
-                'Access-Control-Allow-Origin': '*'
+                'Content-Type': 'application/json;charset=utf-8'
             }
         };
 
-        $http(request).then(function (success) {
-            alert(data);
+        $http(request).then(function (response) {
+            console.info(response.data.text)
         }, function (error) {
-
+            console.info()
         });
     };
 });
