@@ -48,6 +48,8 @@ public class XSDTreeObject {
 		root.add(copyTree.getRootElement());
 		XSDNode aboveRoot = new XSDNode();
 		aboveRoot.setNextNodeList(root);
+		aboveRoot.setElementName("root");
+		copyTree.setRootElement(aboveRoot);
 		changeTree(copyTree.getRootElement(), copyTree.getRootElement().getNextNodeList().get(0), settings);
 
 		return copyTree;
