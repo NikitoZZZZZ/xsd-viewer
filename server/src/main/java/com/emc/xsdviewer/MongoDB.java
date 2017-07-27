@@ -40,15 +40,15 @@ public class MongoDB {
         xsdCollection.insert(doc);
     }
 
-//    public List<XsdViewComposition> getAll() {
-//        List<XsdViewComposition> xsdFiles = new ArrayList<XsdViewComposition>();
-//        DBCursor cursor = xsdCollection.find();
-//        while (cursor.hasNext()) {
-//            DBObject dbo = cursor.next();
-//            xsdFiles.add(XsdViewComposition.fromDBObject(dbo));
-//        }
-//        return xsdFiles;
-//    }
+/*    public List<XsdViewComposition> getAll() {
+        List<XsdViewComposition> xsdFiles = new ArrayList<XsdViewComposition>();
+        DBCursor cursor = xsdCollection.find();
+        while (cursor.hasNext()) {
+            DBObject dbo = cursor.next();
+            xsdFiles.add(XsdViewComposition.fromDBObject(dbo));
+        }
+        return xsdFiles;
+    }*/
 
     public HashSet<String> getAllNames() {
         HashSet<String> xsdFiles = new HashSet<>();
@@ -97,33 +97,35 @@ public class MongoDB {
         inputFile.save();
     }
 
-//    public String getFile(final String name) {
-//        StringWriter sw = new StringWriter();
-//        InputStream inputStream = getInputStreamFromGridFSD(name);
-//        String readLine;
-//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
-//        try {
-//            while (((readLine = bufferedReader.readLine()) != null)) {
-//                System.out.println(readLine);
-//                sw.append(readLine);
-//            }
-//        } catch (Exception e) {
-//            //LOG????
-//        }
-//        return sw.toString();
-//    }
+/*    public String getFile(final String name) {
+        StringWriter sw = new StringWriter();
+        InputStream inputStream = getInputStreamFromGridFSD(name);
+        String readLine;
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        try {
+            while (((readLine = bufferedReader.readLine()) != null)) {
+                System.out.println(readLine);
+                sw.append(readLine);
+            }
+        } catch (Exception e) {
+            //LOG????
+        }
+        return sw.toString();
+    }*/
 
-//    public String getByName(final String name) {
-//        return getFile(name);
-//    }
+/*    public String getByName(final String name) {
+        return getFile(name);
+    }*/
 
     public InputStream getInputStream(final String name) {
         return getInputStreamFromGridFSD(name);
     }
 
     public HashSet<String> getAllAttributes() {
-        HashSet<String> allAttributes = new HashSet<String>(Arrays.asList("a attribute", "b attribute", "c attribute"));
-        //TODO: To register a file in the database, with a list of attributes; In this method, get the file from the database
+        HashSet<String> allAttributes = new HashSet<String>
+        	(Arrays.asList("a attribute", "b attribute", "c attribute"));
+        //TODO: To register a file in the database, with a list of attributes;
+        //	In this method, get the file from the database
         return allAttributes;
     }
 
