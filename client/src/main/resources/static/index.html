@@ -1,26 +1,26 @@
 <html lang="en" ng-app="WebApp" xmlns="http://www.w3.org/1999/html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="nikita">
-    <link rel="icon" href="ico/favicon.ico">
+    <meta charset=" utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<meta name="description" content="">
+<meta name="author" content="nikita">
+<link rel="icon" href="ico/favicon.ico">
 
-    <title> XSD-viewer </title>
+<title> XSD-viewer </title>
 
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="css/navbar-static-top.css" rel="stylesheet">
+<link href="css/navbar-static-top.css" rel="stylesheet">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-    <script type="text/javascript" src="js/main.controller.js"></script>
-    <script type="text/javascript" src="js/main.module.js"></script>
-    <script type="text/javascript" src="js/main.service.js "></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script type="text/javascript" src="js/main.controller.js"></script>
+<script type="text/javascript" src="js/main.module.js"></script>
+<script type="text/javascript" src="js/main.service.js "></script>
 
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -52,7 +52,7 @@
         <div class="row">
 
             <div class="col-md-4" align="center">
-                <div class="fileupload fileupload-new" data-provides="fileupload" ng-controller="ctrl" >
+                <div class="fileupload fileupload-new" data-provides="fileupload" ng-controller="ctrl">
                     <span class="btn btn-info btn-file btn-lg">
                         <span class="fileupload-new">
                                Select file
@@ -66,7 +66,8 @@
                 <br>
                 <br>
 
-                <input type="file" ng-model-instant id="fileToUpload" multiple onchange="angular.element(this).scope().setFiles(this)" />
+                <input type="file" ng-model-instant id="fileToUpload" multiple
+                       onchange="angular.element(this).scope().setFiles(this)"/>
                 <span>{{file.webkitRelativePath || file.name}}</span>
 
             </div>
@@ -89,12 +90,13 @@
     <!-- Main component for a primary marketing message or call to action -->
     <div class="jumbotron">
 
-        <div class="row" ng-controller="ctrl">
+        <div align="left" class="row" ng-controller="ctrl">
+            <pre>{{myData}}</pre>
             <br> <br> <br> <br>
-            <br> <br> <br> <br>
-            <br> <br> <br> <br>
-            <button type="button" class="btn btn-info btn-lg" ng-click="postFile()">Upload</button>
-            <button type="button" class="btn btn-info btn-lg" ng-click="getFile()">Get</button>
+            <div align="center">
+                 <button type="button" class="btn btn-info btn-lg" ng-click="postFile()">Upload</button>
+                 <button type="button" class="btn btn-info btn-lg" ng-click="getFile()">Get</button>
+            </div>
         </div>
 
     </div>

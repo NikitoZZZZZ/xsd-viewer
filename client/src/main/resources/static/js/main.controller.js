@@ -36,14 +36,14 @@ var app = angular.module("WebApp", []).controller('ctrl', function ($scope, $htt
     $scope.getFile = function () {
         var request = {
             method: 'GET',
-            url: 'http://localhost:8765/check1',
+            url: 'http://localhost:8765/xsd1',
             headers: {
                 'Content-Type': 'application/json;charset=utf-8'
             }
         };
 
         $http(request).then(function (response) {
-            console.info(response.data.text)
+            $scope.myData = JSON.stringify(response.data, null, 4);
         }, function (error) {
             console.info()
         });
