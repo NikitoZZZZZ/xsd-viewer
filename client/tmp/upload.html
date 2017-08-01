@@ -10,18 +10,21 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 </div>
 <div>
-    <div style="float: left; margin-right: 10px;">
-        <p>XSD Name:</p>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            XSD Name:
+            <input name="textBoxXSDName"/>
+            <button type="button">Add</button>
+        </div>
+        <div align="center" class="panel-body">
+            <div>
+                File:
+                <input style="display: inline" type=file name=browse>
+                <button style="display: inline" type="button" class="btn btn-xs btn-danger">Delete</button>
+            </div>
+            <button type="button" class="btn btn-default">Upload</button>
+        </div>
     </div>
-    <input name="textBoxXSDName"/>
-    <button type="button">Add</button>
 </div>
-<div>
-    <p>File:</p>
-    <input type=file name=browse>
-    <input type="checkbox"/>
-</div>
-<button type="button">Upload</button>
-
 </body>
 </html>
