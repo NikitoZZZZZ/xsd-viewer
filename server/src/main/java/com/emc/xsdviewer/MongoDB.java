@@ -23,16 +23,16 @@ public class MongoDB {
     private DB db;
     private DBCollection xsdCollection;
     private GridFS gridfs;
-    private final String collectionName = "xsd_files";
+    private static final String COLLECTION_NAME = "xsd_files";
 
     public MongoDB() {
         mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
         db = mongoClient.getDB("xsdDB");
-        xsdCollection = db.getCollection(collectionName);
+        xsdCollection = db.getCollection(COLLECTION_NAME);
         if (xsdCollection == null) {
-            xsdCollection = db.createCollection(collectionName, null);
+            xsdCollection = db.createCollection(COLLECTION_NAME, null);
         }
-        gridfs = new GridFS(db, collectionName);
+        gridfs = new GridFS(db, COLLECTION_NAME);
     }
 
     public void add(final XsdViewComposition xsd) {
