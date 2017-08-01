@@ -24,7 +24,7 @@ public class Controller {
         return db.getAllNames();
     }
 
-    @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public ResponseEntity<?> get(final @PathVariable String name,
                                  final @RequestParam(value = "attributes", required = false)
                                  Set<String> attributes) {
@@ -61,7 +61,7 @@ public class Controller {
         return new ResponseEntity<>("XSD-file added", HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "/{ID}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
     public ResponseEntity<?> update(final @PathVariable String id,
             final @RequestBody XsdViewComposition xsd) {
         db.updateNameByID(id, xsd.getName());
