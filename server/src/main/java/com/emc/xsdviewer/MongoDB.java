@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,15 +20,14 @@ import com.mongodb.gridfs.GridFSInputFile;
 
 public class MongoDB {
 
-    private MongoClient mongoClient;
-    private DB db;
     private DBCollection xsdCollection;
-    private GridFS gridfs;
+    private final GridFS gridfs;
     private static final String COLLECTION_NAME = "xsd_files";
+    private static final String ID_KEY = "_id";
 
     public MongoDB() {
-        mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
-        db = mongoClient.getDB("xsdDB");
+        MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+        DB db = mongoClient.getDB("xsdDB");
         xsdCollection = db.getCollection(COLLECTION_NAME);
         if (xsdCollection == null) {
             xsdCollection = db.createCollection(COLLECTION_NAME, null);
@@ -51,8 +51,8 @@ public class MongoDB {
         return xsdFiles;
     }*/
 
-    public HashSet<String> getAllNames() {
-        HashSet<String> xsdFiles = new HashSet<>();
+    public Set<String> getAllNames() {
+        Set<String> xsdFiles = new HashSet<>();
         DBCursor cursor = gridfs.getFileList();
         while (cursor.hasNext()) {
             DBObject object = cursor.next();
@@ -72,14 +72,14 @@ public class MongoDB {
     public void updateNameByID(final String id, final String newName) {
         BasicDBObject newData = new BasicDBObject();
         newData.put("_name", newName);
-        newData.put("_id", id);
-        BasicDBObject searchQuery = new BasicDBObject().append("_id", id);
+        newData.put(ID_KEY, id);
+        BasicDBObject searchQuery = new BasicDBObject().append(ID_KEY, id);
         xsdCollection.update(searchQuery, newData);
     }
 
     public void removeByID(final String id) {
         BasicDBObject query = new BasicDBObject();
-        query.put("_id", id);
+        query.put(ID_KEY, id);
         xsdCollection.remove(query);
     }
 
@@ -90,7 +90,7 @@ public class MongoDB {
 
     private DBObject findRecordByID(final String id) {
         BasicDBObject query = new BasicDBObject();
-        query.put("_id", id);
+        query.put(ID_KEY, id);
         return xsdCollection.findOne(query);
     }
 
@@ -124,10 +124,9 @@ public class MongoDB {
         return getInputStreamFromGridFSD(name);
     }
 
-    public HashSet<String> getAllAttributes() {
-        HashSet<String> allAttributes = new HashSet<String>(Arrays.asList("a attribute", "b attribute", "c attribute"));
+    public Set<String> getAllAttributes() {
         //TODO: To register a file in the database, with a list of attributes; In this method, get the file from the database
-        return allAttributes;
+        return new HashSet<String>(Arrays.asList("a attribute", "b attribute", "c attribute"));
     }
 
     private InputStream getInputStreamFromMultipartFile(final MultipartFile multipartFile) throws IOException {
@@ -146,7 +145,6 @@ public class MongoDB {
     }
 
     public boolean checkName(final String name) {
-        HashSet<String> allNames = getAllNames();
-        return allNames.contains(name);
+        return getAllNames().contains(name);
     }
 }

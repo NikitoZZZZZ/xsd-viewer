@@ -12,23 +12,22 @@ public class XsdNode {
     private Node node;
     private boolean visible;
 
-    XsdNode() {
-
+    public XsdNode() {
     }
 
-    XsdNode(Node node) {
-        setNode(node);
-        setElementName(node.getNodeName());
-        setAttrName(XsdNodeHandler.createAttrName(node));
-        setNextNodeList(XsdNodeHandler.createNextNodeList(node));
-        setVisible(true);
+    public XsdNode(Node node) {
+        this.elementName = node.getNodeName();
+        this.attrName = XsdNodeHandler.createAttrName(node);
+        this.nextNodeList = XsdNodeHandler.createNextNodeList(node);
+        this.node = node;
+        this.visible = true;
     }
 
     public String getElementName() {
         return elementName;
     }
 
-    public void setElementName(String elementName) {
+    public void setElementName(final String elementName) {
         this.elementName = elementName;
     }
 
@@ -36,7 +35,7 @@ public class XsdNode {
         return attrName;
     }
 
-    public void setAttrName(String attrName) {
+    public void setAttrName(final String attrName) {
         this.attrName = attrName;
     }
 
@@ -44,7 +43,7 @@ public class XsdNode {
         return nextNodeList;
     }
 
-    public void setNextNodeList(List<XsdNode> nextNodeList) {
+    public void setNextNodeList(final List<XsdNode> nextNodeList) {
         this.nextNodeList = nextNodeList;
     }
 
@@ -52,15 +51,15 @@ public class XsdNode {
         return node;
     }
 
-    public void setNode(Node node) {
+    public void setNode(final Node node) {
         this.node = node;
     }
 
-    protected boolean getVisible() {
+    protected boolean isVisible() {
         return visible;
     }
 
-    public void setVisible(boolean visible) {
+    public void setVisible(final boolean visible) {
         this.visible = visible;
     }
 }

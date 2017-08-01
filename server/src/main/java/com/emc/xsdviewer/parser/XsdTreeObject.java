@@ -9,11 +9,11 @@ public class XsdTreeObject {
     private XsdNode rootElement;
 
     public XsdTreeObject(String fileName) {
-        setRootElement(XsdTreeObjectHandler.createXSDNode(fileName));
+        this.rootElement = XsdTreeObjectHandler.createXSDNode(fileName);
     }
 
     public XsdTreeObject(InputStream inputStream) {
-        setRootElement(XsdTreeObjectHandler.createXSDNode(inputStream));
+        this.rootElement = XsdTreeObjectHandler.createXSDNode(inputStream);
     }
 
     public XsdNode getRootElement() {

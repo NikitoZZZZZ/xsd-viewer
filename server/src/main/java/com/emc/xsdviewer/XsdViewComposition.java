@@ -7,10 +7,10 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
 public class XsdViewComposition {
-    private String name = "null";
-    private String id = "null";
-    private String xsdSchema = "null";
-    private Link link = new Link("null");
+    private final String name;
+    private final String id;
+    private final String xsdSchema;
+    private final Link link;
     private static final String PORT = "8765";
     private static final String URL_TEMPLATE = "http://localhost:" + PORT + "/%s";
 
@@ -18,14 +18,14 @@ public class XsdViewComposition {
         this.name = name;
         this.id = id;
         this.xsdSchema = xsdSchema;
-        this.link = new Link(String.format(URL_TEMPLATE, this.id.toString()));
+        this.link = new Link(String.format(URL_TEMPLATE, this.id));
     }
 
     public XsdViewComposition(final String name, final String xsdSchema) {
         this.name = name;
         this.id = new ObjectId().toHexString();
         this.xsdSchema = xsdSchema;
-        this.link = new Link(String.format(URL_TEMPLATE, this.id.toString()));
+        this.link = new Link(String.format(URL_TEMPLATE, this.id));
     }
 
 

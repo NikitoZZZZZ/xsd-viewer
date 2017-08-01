@@ -2,6 +2,8 @@ package com.emc.xsdviewer.parser;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,6 +14,8 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XsdTreeObjectHandler {
+    private static final Logger LOGGER = Logger.getLogger(XsdTreeObjectHandler.class.getName());
+
     protected XsdTreeObjectHandler() {
     }
 
@@ -22,8 +26,8 @@ public class XsdTreeObjectHandler {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(new InputSource(/*fileName*/));
             element = new XsdNode(document.getDocumentElement());
-        } catch (IOException | SAXException | ParserConfigurationException e) {
-            e.printStackTrace();
+        } catch (final IOException | SAXException | ParserConfigurationException e) {
+            LOGGER.log(Level.ALL, "EXCEPTION in createXSDNode-method", e);
         }
 
         return element;
@@ -36,8 +40,8 @@ public class XsdTreeObjectHandler {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document document = builder.parse(inputStream);
             element = new XsdNode(document.getDocumentElement());
-        } catch (IOException | SAXException | ParserConfigurationException e) {
-            e.printStackTrace();
+        } catch (final IOException | SAXException | ParserConfigurationException e) {
+            LOGGER.log(Level.ALL, "EXCEPTION in createXSDNode-method", e);
         }
 
         return element;

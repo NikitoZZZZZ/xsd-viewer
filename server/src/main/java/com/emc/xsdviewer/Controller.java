@@ -2,7 +2,7 @@ package com.emc.xsdviewer;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,18 +16,18 @@ import com.emc.xsdviewer.parser.XsdTreeObject;
 @RestController
 public class Controller {
 
-    private MongoDB db = new MongoDB();
+    private final MongoDB db = new MongoDB();
     private XsdTreeObject tree;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public HashSet<String> getAll() {
+    public Set<String> getAll() {
         return db.getAllNames();
     }
 
     @RequestMapping(value = "/{NAME}", method = RequestMethod.GET)
     public ResponseEntity<?> get(final @PathVariable String name,
                                  final @RequestParam(value = "attributes", required = false)
-                                 HashSet<String> attributes) {
+                                 Set<String> attributes) {
 
         Settings settings = new Settings();
         InputStream inputStream = db.getInputStream(name);
@@ -43,9 +43,8 @@ public class Controller {
     }
 
     @RequestMapping(value = "/allAttributes", method = RequestMethod.GET)
-    public HashSet<String> get() {
-        HashSet<String> setOfAttributes = db.getAllAttributes();
-        return setOfAttributes;
+    public Set<String> get() {
+        return db.getAllAttributes();
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -73,7 +72,7 @@ public class Controller {
     public ResponseEntity<?> delete(final @PathVariable String id) {
         db.removeByID(id);
         //TODO: create notification, if xsd is not exist
-        return new ResponseEntity<>("XSD with id: " + id.toString() + " removed", HttpStatus.OK);
+        return new ResponseEntity<>("XSD with id: " + id + " removed", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.DELETE)
