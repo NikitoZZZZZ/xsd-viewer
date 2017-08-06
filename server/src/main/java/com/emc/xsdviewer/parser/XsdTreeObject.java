@@ -42,7 +42,7 @@ public class XsdTreeObject {
         }
     }
 
-    public XsdTreeObject getTree(Settings settings) {
+    public XsdNode getTree(Settings settings) {
         XsdTreeObject copyTree = this;
         List<XsdNode> root = new ArrayList<XsdNode>();
         
@@ -53,7 +53,7 @@ public class XsdTreeObject {
         copyTree.setRootElement(aboveRoot);
         changeTree(copyTree.getRootElement(), copyTree.getRootElement().getChildren().get(0), settings);
 
-        return copyTree;
+        return copyTree.getRootElement();
     }
 
     public String toString() {
