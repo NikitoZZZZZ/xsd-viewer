@@ -6,9 +6,8 @@ import org.w3c.dom.Node;
 
 public class XsdNode {
 
-    private String elementName;
-    private String attrName;
-    private List<XsdNode> nextNodeList;
+    private String name;
+    private List<XsdNode> children;
     private Node node;
     private boolean visible;
 
@@ -16,35 +15,26 @@ public class XsdNode {
     }
 
     public XsdNode(Node node) {
-        this.elementName = node.getNodeName();
-        this.attrName = XsdNodeHandler.createAttrName(node);
-        this.nextNodeList = XsdNodeHandler.createNextNodeList(node);
+        this.name = XsdNodeHandler.createName(node);
+        this.children = XsdNodeHandler.createNextNodeList(node);
         this.node = node;
         this.visible = true;
     }
 
-    public String getElementName() {
-        return elementName;
+    public String getName() {
+        return name;
     }
 
     public void setElementName(final String elementName) {
-        this.elementName = elementName;
+        this.name = elementName;
     }
 
-    public String getAttrName() {
-        return attrName;
-    }
-
-    public void setAttrName(final String attrName) {
-        this.attrName = attrName;
-    }
-
-    public List<XsdNode> getNextNodeList() {
-        return nextNodeList;
+    public List<XsdNode> getChildren() {
+        return children;
     }
 
     public void setNextNodeList(final List<XsdNode> nextNodeList) {
-        this.nextNodeList = nextNodeList;
+        this.children = nextNodeList;
     }
 
     protected Node getNode() {

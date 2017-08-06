@@ -10,11 +10,11 @@ public class XsdNodeHandler {
     protected XsdNodeHandler() {
     }
 
-    public static String createAttrName(Node node) {
+    public static String createName(Node node) {
         if (node.getAttributes().getNamedItem("name") != null) {
             return node.getAttributes().getNamedItem("name").toString().substring(5).replaceAll("[\"]", "");
         }
-        return null;
+        return node.getNodeName();
     }
 
     public static List<XsdNode> createNextNodeList(Node node) {

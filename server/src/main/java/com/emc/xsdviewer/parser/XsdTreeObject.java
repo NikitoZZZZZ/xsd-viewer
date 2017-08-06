@@ -25,18 +25,18 @@ public class XsdTreeObject {
     }
 
     private void changeTree(XsdNode parent, XsdNode child, Settings settings) {
-        List<XsdNode> pointer = child.getNextNodeList();
+        List<XsdNode> pointer = child.getChildren();
 
         if (pointer != null) {
             for (int i = 0; i < pointer.size(); ++i) {
                 changeTree(child, pointer.get(i), settings);
             }
         }
-        if (settings.getXsdNodesNames().contains(child.getElementName())) {
-            List<XsdNode> mem = child.getNextNodeList();
+        if (settings.getXsdNodesNames().contains(child.getName())) {
+            List<XsdNode> mem = child.getChildren();
 
-            parent.getNextNodeList().remove(child);
-            if (parent.getNextNodeList().isEmpty()) {
+            parent.getChildren().remove(child);
+            if (parent.getChildren().isEmpty()) {
                 parent.setNextNodeList(mem);
             }
         }
@@ -45,13 +45,13 @@ public class XsdTreeObject {
     public XsdTreeObject getTree(Settings settings) {
         XsdTreeObject copyTree = this;
         List<XsdNode> root = new ArrayList<XsdNode>();
-
+        
         root.add(copyTree.getRootElement());
         XsdNode aboveRoot = new XsdNode();
         aboveRoot.setNextNodeList(root);
         aboveRoot.setElementName("root");
         copyTree.setRootElement(aboveRoot);
-        changeTree(copyTree.getRootElement(), copyTree.getRootElement().getNextNodeList().get(0), settings);
+        changeTree(copyTree.getRootElement(), copyTree.getRootElement().getChildren().get(0), settings);
 
         return copyTree;
     }
