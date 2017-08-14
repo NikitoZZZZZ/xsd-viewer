@@ -1,13 +1,25 @@
-app.controller("TreeCtrl", ["$scope", "treeService", function($scope, treeService) {
+app.controller("TreeCtrl", ["$scope", "$http", "treeService", function($scope, $http, treeService) {
 
-  var names = [ 'check1', 'check2', 'check3' ];
+  var names = [];
+            var request = {
+                method: 'GET',
+                url: 'http://localhost:8765/all',
+                    headers: {
+                        'Content-Type': 'application/json;charset=utf-8'
+                    }
+                };
 
-  $scope.schemaList = [];
+            $http(request).then(function (response) {
+                names = response.data.slice();
+                $scope.schemaList = [];
 
-  for(var i = 0; i < names.length; ++i) {
-    $scope.schemaList[i] = { value: names[i], label: names[i] };
-  }
+                // Initialization of Select field
+                for(var i = 0; i < names.length; ++i) {
+                  $scope.schemaList[i] = { value: names[i], label: names[i] };
+                }
+            }, function (error) {
+                console.info()
+            });
 
   $scope.showTree = treeService.showTree;
-
 }]);
