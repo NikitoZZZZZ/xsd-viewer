@@ -1,7 +1,7 @@
 app.service("treeService", function() {
 this.showTree = function(schemaName) {
 
-var margin = {top: 30, right: 20, bottom: 30, left: 20},
+var margin = {top: 30, right: 10, bottom: 10, left: 10},
     width = 960 - margin.left - margin.right,
     barHeight = 20,
     barWidth = width * .8;
@@ -16,7 +16,7 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#treeView").append("svg:svg")
     .attr("width", width + margin.left + margin.right)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
