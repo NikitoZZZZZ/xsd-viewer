@@ -12,9 +12,12 @@ app.service("mainService", function($http) {
             }
         };
         $http(request).then(function (success) {
-              alert("File sent");
+              $('#successAlert').show();
+              $('#errorAlert').hide();
         }, function (error) {
-
+              $('#errorAlert').show();
+              $('#successAlert').hide();
         });
+        console.log("end");
     }
 });
