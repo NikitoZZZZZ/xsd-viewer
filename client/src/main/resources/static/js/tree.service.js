@@ -69,7 +69,7 @@ function update(source) {
   nodeEnter.append("text")
       .attr("dy", 3.5)
       .attr("dx", 5.5)
-      .text(function(d) { return d.name; });
+      .text(function(d) { return d.name + d.details; });
 
   // Transition nodes to their new position.
   nodeEnter.transition()

@@ -49,7 +49,7 @@ public class XsdTreeObject {
         root.add(copyTree.getRootElement());
         XsdNode aboveRoot = new XsdNode();
         aboveRoot.setNextNodeList(root);
-        aboveRoot.setElementName("root");
+        aboveRoot.setName("root");
         copyTree.setRootElement(aboveRoot);
         changeTree(copyTree.getRootElement(), copyTree.getRootElement().getChildren().get(0), settings);
 
