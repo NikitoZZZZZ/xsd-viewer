@@ -2,7 +2,6 @@ package com.emc.xsdviewer.parser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -49,21 +48,27 @@ public class XsdNodeHandler {
         else {
         	name = node.getNodeName();
         }
+        
+        return name;
+    }
+    
+    public static String createDetails(Node node) {
+    	String details = "";
+    	
         for (Map.Entry<String, List<String>> entry : types.entrySet()) {
         	if(entry.getKey().contains(node.getNodeName())) {
         		for(int i = 0; i < entry.getValue().size(); ++i) {
         			try {
-        				name += ", "
+        				details += ", "
         						+ node.getAttributes().getNamedItem((entry.getValue().get(i))).toString();
         			}
         			catch (NullPointerException e) {
-        				
         			}
         		}
         	}
         }
-        
-        return name;
+    	
+    	return details;
     }
 
     public static List<XsdNode> createNextNodeList(Node node) {
