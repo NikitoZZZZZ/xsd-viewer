@@ -24,7 +24,7 @@ public class XsdTreeObjectHandler {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new InputSource(/*fileName*/));
+            Document document = builder.parse(new InputSource(fileName));
             element = new XsdNode(document.getDocumentElement());
         } catch (final IOException | SAXException | ParserConfigurationException e) {
             LOGGER.log(Level.ALL, "EXCEPTION in createXSDNode-method", e);

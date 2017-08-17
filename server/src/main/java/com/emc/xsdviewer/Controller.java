@@ -32,7 +32,7 @@ public class Controller {
         Settings settings = new Settings();
         InputStream inputStream = db.getInputStream(name);
         if (attributes != null) {
-            settings.setXsdNodesNames(attributes);
+            settings.deleteNodeName(attributes);
         }
 
         if (inputStream != null) {

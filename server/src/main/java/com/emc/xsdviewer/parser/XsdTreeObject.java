@@ -28,7 +28,7 @@ public class XsdTreeObject {
         List<XsdNode> pointer = child.getChildren();
 
         if (pointer != null) {
-            for (int i = 0; i < pointer.size(); ++i) {
+            for (int i = pointer.size() - 1; i >= 0; --i) {
                 changeTree(child, pointer.get(i), settings);
             }
         }

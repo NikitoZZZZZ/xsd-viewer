@@ -7,7 +7,19 @@ public class Settings {
     private Set<String> xsdNodesNames;
 
     public Settings() {
-        setXsdNodesNames(new HashSet<>());
+    	Set<String> set = new HashSet<>();
+    	
+    	set.add("xs:schema");
+    	set.add("xs:complexType");
+    	set.add("xs:simpleType");
+    	set.add("xs:sequence");
+    	set.add("xs:restriction");
+    	set.add("xs:minInclusive");
+    	set.add("xs:maxInclusive");
+    	set.add("xs:totalDigits");
+    	set.add("xs:minLength");
+    	set.add("xs:maxLength");
+        setXsdNodesNames(set);
     }
 
     public Set<String> getXsdNodesNames() {
@@ -20,5 +32,9 @@ public class Settings {
 
     public void addNodeName(final String nodeName) {
         xsdNodesNames.add(nodeName);
+    }
+    
+    public void deleteNodeName(final Set<String> nodeNames) {
+    		xsdNodesNames.removeAll(nodeNames);
     }
 }
