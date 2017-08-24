@@ -55,14 +55,4 @@ public class XsdTreeObject {
 
         return copyTree.getRootElement();
     }
-    
-    public String getXPath(String elementName, HashSet<String> xPathes) {
-    	for (String s : xPathes) {
-    		if (s.endsWith(elementName)) {
-    			return s;
-    		}
-    	}
-    	
-    	return "";
-    }
 }
