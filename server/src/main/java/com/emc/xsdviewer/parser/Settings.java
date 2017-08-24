@@ -8,7 +8,8 @@ public class Settings {
 
     public Settings() {
     	Set<String> set = new HashSet<>();
-    	
+
+    	set.add("xs:element");
     	set.add("xs:schema");
     	set.add("xs:complexType");
     	set.add("xs:simpleType");

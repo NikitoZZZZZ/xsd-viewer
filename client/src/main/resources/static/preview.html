@@ -34,52 +34,28 @@ path.link {
 
 <div ng-app="WebApp">
 
-    <div class="panel panel-default">
-        <div class="panel-heading" ng-controller="TreeCtrl">
+    <div ng-controller="TreeCtrl" class="panel panel-default">
+        <div class="panel-heading">
             XSD Name:
             <select ng-model="selected_schema"
                     ng-options="schema as schema.label for schema in schemaList">
             </select>
-            <button type="button" class="btn btn-secondary float-right" ng-click="showTree(selected_schema.value)">Show</button>
+            <button type="button" class="btn btn-secondary float-right" ng-click="showTree(selected_schema.value, selectedAttrs)">Show</button>
         </div>
         <div class="panel-body">
 
-            <div class="col-sm-2 col-md-2 col-lg-2">
+            <div  class="col-sm-2 col-md-2 col-lg-2">
                 <p>Fields:</p>
-                <div>
-                    <div>
-                        <input name="optionAll" type="checkbox" value="cb1"/>All
-                    </div>
-                    <div>
-                        <input name="optionSchema" type="checkbox" value="cb1"/>schema
-                    </div>
-                    <div>
-                        <input name="optionSequence" type="checkbox" value="cb1"/>sequence
-                    </div>
-                    <div>
-                        <input name="optionComplexType" type="checkbox" value="cb1"/>complexType
-                    </div>
-                    <div>
-                        <input name="optionSimpleType" type="checkbox" value="cb1"/>simpleType
-                    </div>
-                    <div>
-                        <input name="optionRestriction" type="checkbox" value="cb1"/>restriction
-                    </div>
-                    <div>
-                        <input name="optionMinInclusive" type="checkbox" value="cb1"/>minInclusive
-                    </div>
-                    <div>
-                        <input name="optionTotalDigits" type="checkbox" value="cb1"/>totalDigits
-                    </div>
-                    <div>
-                        <input name="optionMinLength" type="checkbox" value="cb1"/>minLength
-                    </div>
-                    <div>
-                        <input name="optionMaxLength" type="checkbox" value="cb1"/>maxLength
-                    </div>
-                    <div>
-                    </div>
+
+
+                <div ng-repeat="attribute in attributes">
+                    <label>
+                        <input type="checkbox" ng-true-value="'{{attribute}}'" ng-false-value="''" ng-model="selectedAttrs[$index]" ng-change="selectBrand(phone)">
+                        {{attribute}}
+                    </label>
                 </div>
+
+
             </div>
             <div id ="treeView" class="col-sm-10">
                 <h2 align="center" >TREE-VIEW</h2>

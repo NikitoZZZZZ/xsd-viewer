@@ -1,5 +1,5 @@
 app.service("treeService", function() {
-this.showTree = function(schemaName) {
+this.showTree = function(schemaName, attributes) {
 
 var margin = {top: 30, right: 10, bottom: 10, left: 10},
     width = 960 - margin.left - margin.right,
@@ -21,7 +21,7 @@ var svg = d3.select("#treeView").append("svg:svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("http://localhost:8765/" + schemaName, function(error, flare) {
+d3.json("http://localhost:8765/" + schemaName + "?attributes=" + attributes.join(','), function(error, flare) {
   if (error) throw error;
 
   flare.x0 = 0;

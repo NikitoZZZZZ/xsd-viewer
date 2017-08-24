@@ -8,6 +8,12 @@ app.controller("TreeCtrl", ["$scope", "$http", "treeService", function($scope, $
                     }
                 };
 
+            $scope.attributes = ["All", "xs:element", "xs:schema", "xs:sequence",
+            "xs:complexType", "xs:simpleType", "xs:restriction", "xs:minInclusive",
+            "xs:totalDigits" ];
+
+            $scope.selectedAttrs = [];
+
             $http(request).then(function (response) {
                 names = response.data.slice();
                 $scope.schemaList = [];
