@@ -1,4 +1,4 @@
-package com.emc.xsdviewer.parser;
+	package com.emc.xsdviewer.parser;
 
 import java.util.List;
 
@@ -11,16 +11,19 @@ public class XsdNode {
     private List<XsdNode> children;
     private Node node;
     private boolean visible;
+    private String xPath;
 
-    public XsdNode() {
+	public XsdNode() {
     }
 
-    public XsdNode(Node node) {
+    public XsdNode(Node node, String xPath) {
         this.name = XsdNodeHandler.createName(node);
         this.details = XsdNodeHandler.createDetails(node);
-        this.children = XsdNodeHandler.createNextNodeList(node);
+        this.children = XsdNodeHandler.createNextNodeList(node,
+        		node.getNodeName() == "xs:element" ? xPath + "/" + this.name : xPath);
         this.node = node;
         this.visible = true;
+        this.xPath = node.getNodeName() == "xs:element" ? xPath + "/" + this.name : xPath;
     }
 
     public String getName() {
@@ -58,8 +61,16 @@ public class XsdNode {
     protected boolean isVisible() {
         return visible;
     }
-
     public void setVisible(final boolean visible) {
         this.visible = visible;
     }
+    
+    public String getXPath() {
+    	return xPath;
+    }
+    
+    public void setXPath(String xPath) {
+    	this.xPath = xPath;
+    }
+    
 }

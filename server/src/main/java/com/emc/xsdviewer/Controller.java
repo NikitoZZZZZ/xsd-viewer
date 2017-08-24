@@ -39,26 +39,26 @@ public class Controller {
             tree = new XsdTreeObject(db.getInputStream(name));
             return new ResponseEntity<>(tree.getTree(settings), HttpStatus.OK);
         }
-        return new ResponseEntity<>("XSD with name: " + name + " not found", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("XSD with name: " + name + " not found\n", HttpStatus.BAD_REQUEST);
     }
 
     @RequestMapping(value = "/allAttributes", method = RequestMethod.GET)
     public Set<String> get() {
         return db.getAllAttributes();
     }
-
+    
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile,
                                  final @RequestParam("name") String name) {
         if (db.checkName(name)) {
-            return new ResponseEntity<>("This name (" + name + ") is already taken", HttpStatus.OK);
+            return new ResponseEntity<>("This name (" + name + ") is already taken\n", HttpStatus.OK);
         }
         try {
             db.addFile(uploadFile, name);
         } catch (final IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("XSD-file added", HttpStatus.OK);
+        return new ResponseEntity<>("XSD-file added\n", HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
@@ -72,12 +72,12 @@ public class Controller {
     public ResponseEntity<?> delete(final @PathVariable String id) {
         db.removeByID(id);
         //TODO: create notification, if xsd is not exist
-        return new ResponseEntity<>("XSD with id: " + id + " removed", HttpStatus.OK);
+        return new ResponseEntity<>("XSD with id: " + id + " removed\n", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/all", method = RequestMethod.DELETE)
     public ResponseEntity<?> delete() {
         db.clear();
-        return new ResponseEntity<>("BD is empty", HttpStatus.OK);
+        return new ResponseEntity<>("BD is empty\n", HttpStatus.OK);
     }
 }

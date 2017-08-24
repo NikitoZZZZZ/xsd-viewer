@@ -71,13 +71,13 @@ public class XsdNodeHandler {
     	return details;
     }
 
-    public static List<XsdNode> createNextNodeList(Node node) {
+    public static List<XsdNode> createNextNodeList(Node node, String xPath) {
         List<XsdNode> nextNodeList = new ArrayList<>();
         if (node.hasChildNodes()) {
             NodeList nodeList = node.getChildNodes();
             for (int i = 0; i < nodeList.getLength(); ++i) {
                 if (nodeList.item(i).getNodeType() != Node.TEXT_NODE) {
-                    nextNodeList.add(new XsdNode(nodeList.item(i)));
+                    nextNodeList.add(new XsdNode(nodeList.item(i), xPath));
                 }
             }
         }

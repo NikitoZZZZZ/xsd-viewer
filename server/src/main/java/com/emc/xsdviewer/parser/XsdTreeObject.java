@@ -1,8 +1,8 @@
 package com.emc.xsdviewer.parser;
 
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public class XsdTreeObject {
@@ -54,13 +54,5 @@ public class XsdTreeObject {
         changeTree(copyTree.getRootElement(), copyTree.getRootElement().getChildren().get(0), settings);
 
         return copyTree.getRootElement();
-    }
-
-    public String toString() {
-        StringWriter sw = new StringWriter();
-
-        //temporary empty
-
-        return sw.toString();
     }
 }
