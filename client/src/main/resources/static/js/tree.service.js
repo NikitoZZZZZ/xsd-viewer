@@ -21,12 +21,11 @@ var svg = d3.select("#treeView").append("svg:svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-if (schemaName == "") {
-    alert("Empty tree name");
-    return;
-}
     d3.json("http://localhost:8765/" + schemaName + "?attributes=" + attributes.join(','), function(error, flare) {
-        if (error) throw error;
+        if (error) {
+            alert("Something went wrong");
+            return;
+        }
 
         flare.x0 = 0;
         flare.y0 = 0;
