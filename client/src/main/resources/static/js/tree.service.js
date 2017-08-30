@@ -21,13 +21,17 @@ var svg = d3.select("#treeView").append("svg:svg")
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-d3.json("http://localhost:8765/" + schemaName + "?attributes=" + attributes.join(','), function(error, flare) {
-  if (error) throw error;
+if (schemaName == "") {
+    alert("Empty tree name");
+    return;
+}
+    d3.json("http://localhost:8765/" + schemaName + "?attributes=" + attributes.join(','), function(error, flare) {
+        if (error) throw error;
 
-  flare.x0 = 0;
-  flare.y0 = 0;
-  update(root = flare);
-});
+        flare.x0 = 0;
+        flare.y0 = 0;
+        update(root = flare);
+    });
 
 function update(source) {
 
