@@ -18,9 +18,6 @@ app.service("mainService", function($http) {
               $('#errorAlert').show();
               $('#successAlert').hide();
         });
-
-        document.getElementById("textBoxName").value="";
-        document.getElementById("inputBoxFile").value="";
         console.log("end");
     }
 });
