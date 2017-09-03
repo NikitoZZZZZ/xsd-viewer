@@ -8,7 +8,7 @@ app.controller("TreeCtrl", ["$scope", "$http", "treeService", function($scope, $
                     }
                 };
 
-            $scope.attributes = ["All", "xs:element", "xs:schema", "xs:sequence",
+            $scope.attributes = ["All", "xs:schema", "xs:sequence",
             "xs:complexType", "xs:simpleType", "xs:restriction", "xs:minInclusive",
             "xs:totalDigits" ];
 
