@@ -20,13 +20,13 @@
     <div class="panel panel-default" ng-controller="ctrl">
         <div class="panel-heading">
             XSD Name:
-            <input name="textBoxXSDName" ng-model="xsdName"/>
+            <input id="textBoxName" name="textBoxXSDName" ng-model="xsdName"/>
             <button type="button">Add</button>
         </div>
         <div align="center" class="panel-body">
             <div>
                 File:
-                <input style="display: inline" type=file name=browse>
+                <input id="inputBoxFile" style="display: inline" type=file name=browse>
                 <button style="display: inline" type="button" class="btn btn-xs btn-danger">Delete</button>
             </div>
             <button type="button" class="btn btn-default" style="margin: 10px 10px;" ng-click="postFile(xsdName)">Upload</button>
