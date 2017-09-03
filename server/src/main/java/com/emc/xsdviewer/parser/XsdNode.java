@@ -1,4 +1,4 @@
-	package com.emc.xsdviewer.parser;
+package com.emc.xsdviewer.parser;
 
 import java.util.List;
 
@@ -13,17 +13,17 @@ public class XsdNode {
     private boolean visible;
     private String xPath;
 
-	public XsdNode() {
+    public XsdNode() {
     }
 
     public XsdNode(Node node, String xPath) {
         this.name = XsdNodeHandler.createName(node);
         this.details = XsdNodeHandler.createDetails(node);
         this.children = XsdNodeHandler.createNextNodeList(node,
-        		node.getNodeName() == "xs:element" ? xPath + "/" + this.name : xPath);
+                node.getNodeName().equals("xs:element") ? xPath + "/" + this.name : xPath);
         this.node = node;
         this.visible = true;
-        this.xPath = node.getNodeName() == "xs:element" ? xPath + "/" + this.name : xPath;
+        this.xPath = node.getNodeName().equals("xs:element") ? xPath + "/" + this.name : xPath;
     }
 
     public String getName() {
@@ -33,13 +33,13 @@ public class XsdNode {
     public void setName(final String elementName) {
         this.name = elementName;
     }
-    
+
     public String getDetails() {
-    	return details;
+        return details;
     }
-    
+
     public void setDetails(String details) {
-    	this.details = details;
+        this.details = details;
     }
 
     public List<XsdNode> getChildren() {
@@ -61,16 +61,17 @@ public class XsdNode {
     protected boolean isVisible() {
         return visible;
     }
+
     public void setVisible(final boolean visible) {
         this.visible = visible;
     }
-    
+
     public String getXPath() {
-    	return xPath;
+        return xPath;
     }
-    
-    public void setXPath(String xPath) {
-    	this.xPath = xPath;
+
+    public void setXPath(final String newxPath) {
+        this.xPath = newxPath;
     }
-    
+
 }

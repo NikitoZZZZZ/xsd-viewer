@@ -27,7 +27,7 @@ public class Controller {
     @RequestMapping(value = "/{name}", method = RequestMethod.GET)
     public ResponseEntity<?> get(final @PathVariable String name,
                                  final @RequestParam(value = "attributes", required = false)
-                                 Set<String> attributes) {
+                                         Set<String> attributes) {
 
         Settings settings = new Settings();
         InputStream inputStream = db.getInputStream(name);
@@ -46,7 +46,7 @@ public class Controller {
     public Set<String> get() {
         return db.getAllAttributes();
     }
-    
+
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile,
                                  final @RequestParam("name") String name) {
@@ -63,7 +63,7 @@ public class Controller {
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
     public ResponseEntity<?> update(final @PathVariable String id,
-            final @RequestBody XsdViewComposition xsd) {
+                                    final @RequestBody XsdViewComposition xsd) {
         db.updateNameByID(id, xsd.getName());
         return new ResponseEntity<>(db.getByID(id), HttpStatus.OK);
     }

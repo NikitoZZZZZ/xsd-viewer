@@ -2,7 +2,6 @@ package com.emc.xsdviewer.parser;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class XsdTreeObject {
@@ -45,7 +44,7 @@ public class XsdTreeObject {
     public XsdNode getTree(Settings settings) {
         XsdTreeObject copyTree = this;
         List<XsdNode> root = new ArrayList<XsdNode>();
-        
+
         root.add(copyTree.getRootElement());
         XsdNode aboveRoot = new XsdNode();
         aboveRoot.setNextNodeList(root);
