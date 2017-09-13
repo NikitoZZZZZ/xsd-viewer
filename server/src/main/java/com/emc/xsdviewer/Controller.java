@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,15 +52,22 @@ public class Controller {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> add(final @RequestParam("xsdScheme") MultipartFile uploadFile,
                                  final @RequestParam("name") String name) {
+
+        String content;
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_HTML);
+
         if (db.checkName(name)) {
-            return new ResponseEntity<>("This name (" + name + ") is already taken\n", HttpStatus.OK);
+            content = "This name (" + name + ") is already taken";
+            return new ResponseEntity<>(content, responseHeaders, HttpStatus.BAD_REQUEST);
         }
         try {
             db.addFile(uploadFile, name);
         } catch (final IOException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("XSD-file added\n", HttpStatus.OK);
+        content = "XSD-file added\n";
+        return new ResponseEntity<>(content, responseHeaders, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "/{id}")
