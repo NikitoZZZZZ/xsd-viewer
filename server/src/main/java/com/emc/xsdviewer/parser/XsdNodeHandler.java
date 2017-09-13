@@ -62,8 +62,10 @@ public class XsdNodeHandler {
         for (Map.Entry<String, List<String>> entry : types.entrySet()) {
             if (entry.getKey().contains(node.getNodeName())) {
                 for (int i = 0; i < entry.getValue().size(); ++i) {
-                    details.append(", ");
-                    details.append(node.getAttributes().getNamedItem(entry.getValue().get(i)).toString());
+                    if (node.getAttributes().getNamedItem(entry.getValue().get(i)) != null) {
+                        details.append(", ");
+                        details.append(node.getAttributes().getNamedItem(entry.getValue().get(i)).toString());
+                    }
                 }
             }
         }
