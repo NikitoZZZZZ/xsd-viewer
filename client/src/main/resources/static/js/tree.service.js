@@ -1,5 +1,9 @@
+
+
 app.service("treeService", function() {
 this.showTree = function(schemaName, attributes) {
+
+d3.select("#treeView").html("");
 
 var margin = {top: 30, right: 10, bottom: 10, left: 10},
     width = 960 - margin.left - margin.right,
@@ -32,6 +36,13 @@ var svg = d3.select("#treeView").append("svg:svg")
         update(root = flare);
     });
 
+var tooltip = d3.select("body")
+	.append("div")
+	.style("position", "absolute")
+	.style("z-index", "10")
+	.style("visibility", "hidden");
+
+
 function update(source) {
 
   // Compute the flattened node list. TODO use d3.layout.hierarchy.
@@ -61,6 +72,7 @@ function update(source) {
       .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
       .style("opacity", 1e-6);
 
+
   // Enter any new nodes at the parent's previous position.
   nodeEnter.append("rect")
       .attr("y", -barHeight / 2)
@@ -72,7 +84,12 @@ function update(source) {
   nodeEnter.append("text")
       .attr("dy", 3.5)
       .attr("dx", 5.5)
-      .text(function(d) { return d.name + d.details; });
+      .text(function(d) {return d.name + d.details  });
+
+
+//  nodeEnter.on("mouseover", function(){return tooltip.style("visibility", "visible");})
+//           .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+//           .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
   // Transition nodes to their new position.
   nodeEnter.transition()
@@ -145,5 +162,10 @@ function click(d) {
 function color(d) {
   return d._children ? "#3182bd" : d.children ? "#c6dbef" : "#fd8d3c";
 }
+
+function highlight(d){
+    return "#000000";
+}
+
 }
 });

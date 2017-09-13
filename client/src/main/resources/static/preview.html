@@ -30,7 +30,8 @@ path.link {
 }
 
 </style>
-<body></body>
+<body>
+
 
 <div ng-app="WebApp">
 
@@ -41,7 +42,7 @@ path.link {
                     ng-options="schema as schema.label for schema in schemaList"
                     ng-change="showTree(selected_schema.value, selectedAttrs)">
             </select>
-            <button type="button" class="btn btn-secondary float-right">Show</button>
+            <button type="button" class="btn btn-secondary float-right" >Show</button>
         </div>
         <div class="panel-body">
 
@@ -68,5 +69,6 @@ path.link {
         </div>
     </div>
 </div>
+
 </body>
 </html>

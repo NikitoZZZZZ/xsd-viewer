@@ -15,12 +15,12 @@ app.service("mainService", function($http) {
               $('#successAlert').show();
               $('#errorAlert').hide();
         }, function (error) {
+              $('#errorAlert').text(error.data);
               $('#errorAlert').show();
               $('#successAlert').hide();
         });
 
         document.getElementById("textBoxName").value="";
         document.getElementById("inputBoxFile").value="";
-        console.log("end");
     }
 });
